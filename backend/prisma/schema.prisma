@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:npg_Zuk5avXSQp7f@ep-silent-resonance-a8r6rcd5-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
+}
+model student {
+  id Int @unique @default(autoincrement())
+  first_name String @db.VarChar(50)
+  last_name String @db.VarChar(50)
+  email String @db.VarChar(50)
+  password String @db.VarChar(50)
+  avatar String? @default("")
+  payments Payment[]
+}
+model Teacher {
+  id Int @unique @default(autoincrement())
+  first_name String @db.VarChar(50)
+  last_name String @db.VarChar(50)
+  email String @db.VarChar(50) @unique
+  password String @db.VarChar(50)
+  avatar String? @default("")
+  courses Course[] 
+}
+model Course {
+  id Int @unique @default(autoincrement())
+  course_name String @db.VarChar(50)
+  course_description String @db.VarChar(200)
+  teacher_email String 
+  teacher_mail Teacher @relation(fields: [teacher_email] , references: [email]) 
+  course_week Week[]
+  videos Video[]
+  payments Payment[]
+  price Int
+  thumbnail String @default("")
+}
+model Week {
+  id Int @unique @default(autoincrement())
+  week_number Int
+  course_id Int
+  course Course @relation(fields: [course_id] , references: [id])
+}
+model Video{
+  id Int @unique @default(autoincrement())
+  video_url String? @default("")
+  course_id Int
+  course Course @relation(fields: [course_id] , references: [id])
+}
+model Payment {
+  id Int @unique @default(autoincrement())
+  payment_status Boolean @default(false)
+  course_id Int
+  studentId Int
+  course Course @relation(fields: [course_id] , references: [id])
+  student student @relation(fields: [studentId] , references: [id])
+}
