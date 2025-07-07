@@ -3,6 +3,7 @@ import LandingPage from './components/LandingPage';
 import Signin from './components/Signin';
 import Signup from './components/Signup';
 import TeacherDashboard from './components/TeacherDashBoard';
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <Route path='/' element={<LandingPage />} />
       <Route path='/signin' element={<Signin/>} />
       <Route path='/signup' element={<Signup/>} />
-      <Route path='/teacher/dashboard' element={<TeacherDashboard/>} />
+      <Route path='/teacher/dashboard' element={<Dashboard/>} />
     </Routes>
   )
 }
