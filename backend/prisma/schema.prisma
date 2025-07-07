@@ -14,16 +14,17 @@ datasource db {
   url      = "postgresql://neondb_owner:npg_Zuk5avXSQp7f@ep-silent-resonance-a8r6rcd5-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
 }
 model student {
-  id Int @unique @default(autoincrement())
+  id Int @unique @id @default(autoincrement())
   first_name String @db.VarChar(50)
   last_name String @db.VarChar(50)
-  email String @db.VarChar(50)
+  email String @db.VarChar(50) @unique
   password String @db.VarChar(50)
   avatar String? @default("")
   payments Payment[]
+  courses StudentCourses[]
 }
 model Teacher {
-  id Int @unique @default(autoincrement())
+  id Int @unique @id @default(autoincrement())
   first_name String @db.VarChar(50)
   last_name String @db.VarChar(50)
   email String @db.VarChar(50) @unique
@@ -32,7 +33,7 @@ model Teacher {
   courses Course[] 
 }
 model Course {
-  id Int @unique @default(autoincrement())
+  id Int @unique @id @default(autoincrement())
   course_name String @db.VarChar(50)
   course_description String @db.VarChar(200)
   teacher_email String 
@@ -42,24 +43,34 @@ model Course {
   payments Payment[]
   price Int
   thumbnail String @default("")
+  students StudentCourses[]
 }
 model Week {
-  id Int @unique @default(autoincrement())
+  id Int @unique @id @default(autoincrement())
   week_number Int
   course_id Int
   course Course @relation(fields: [course_id] , references: [id])
 }
 model Video{
-  id Int @unique @default(autoincrement())
+  id Int @unique @id @default(autoincrement())
   video_url String? @default("")
   course_id Int
   course Course @relation(fields: [course_id] , references: [id])
 }
 model Payment {
-  id Int @unique @default(autoincrement())
+  id Int @unique @id @default(autoincrement())
   payment_status Boolean @default(false)
   course_id Int
   studentId Int
   course Course @relation(fields: [course_id] , references: [id])
   student student @relation(fields: [studentId] , references: [id])
+}
+
+model StudentCourses {
+  @@id([courseId , studentEmail])
+  courseId Int
+  courseName String
+  course Course @relation(fields: [courseId] , references: [id])
+  studentEmail String
+  student student @relation(fields: [studentEmail] , references: [email])
 }
