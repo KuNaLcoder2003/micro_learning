@@ -138,7 +138,7 @@ teacher_router.post('/upload_course/:email', upload.single('course_thumbnail'), 
                 course_description: course_description,
                 price: Number(price),
                 teacher_email: email,
-                thumbnail : upload_result.url
+                thumbnail: upload_result.url
             }
         })
         if (!course) {
@@ -148,10 +148,71 @@ teacher_router.post('/upload_course/:email', upload.single('course_thumbnail'), 
             return
         }
         res.status(200).json({
-            message : 'Succesfully uploaded course',
+            message: 'Succesfully uploaded course',
             course
         })
 
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: 'Something went wrong'
+        })
+    }
+})
+
+teacher_router.get('/details/:email', async (req: Request, res: Response) => {
+    try {
+        const email = req.params.email;
+        if (!email) {
+            res.status(404).json({
+                message: 'Teacher not found'
+            })
+            return
+        }
+        const teacher = await prisma.teacher.findFirst({
+            where: { email: email }
+        })
+        if (!teacher) {
+            res.status(404).json({
+                message: 'Teacher not found'
+            })
+            return
+        }
+        const courses = await prisma.course.findMany({
+            where: { teacher_email: teacher.email }
+        })
+        const courseIds = courses.map( obj => {
+            return obj.id
+        })
+        if (courses.length == 0) {
+            res.status(404).json({
+                message: 'No courses available at the moment'
+            })
+            return
+        }
+        const students = await prisma.studentCourses.findMany({
+            where : {
+                courseId : {
+                    in : courseIds
+                }
+            }
+        })
+        
+        let student_courses : any = {} 
+
+        students.forEach((student )=>{
+            if(student_courses[student.courseId]){
+                student_courses[student.courseId]++
+            } else {
+                student_courses[student.courseId] = 1
+            }
+        })
+        
+        res.status(200).json({
+            teacher_name: `${teacher.first_name} ${teacher.last_name}`,
+            courses: courses,
+            student_courses
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({
