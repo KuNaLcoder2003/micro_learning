@@ -2,16 +2,27 @@ import { Route, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Signin from './components/Signin';
 import Signup from './components/Signup';
-import TeacherDashboard from './components/TeacherDashBoard';
 import Dashboard from './components/Dashboard';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [isLoggedIn , setIsLoggedIn] = useState<boolean>(false);
+  useEffect(()=> {
+    const token = localStorage.getItem('token')
+    if(!token) {
+      setIsLoggedIn(false)
+    }
+    else {
+      setIsLoggedIn(true)
+    }
+  } , [])
+
   return (
     <Routes>
       <Route path='/' element={<LandingPage />} />
-      <Route path='/signin' element={<Signin/>} />
+      <Route path='/signin' element={<Signin setIsLoggedIn={setIsLoggedIn} />} />
       <Route path='/signup' element={<Signup/>} />
-      <Route path='/teacher/dashboard' element={<Dashboard/>} />
+      <Route path='/teacher/dashboard' element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} /> : <Signin setIsLoggedIn={setIsLoggedIn} />} />
     </Routes>
   )
 }

@@ -8,7 +8,10 @@ interface cred {
     password: string
 }
 
-const Signin = () => {
+interface Prop {
+    setIsLoggedIn : React.Dispatch<React.SetStateAction<boolean>>
+}
+const Signin : React.FC<Prop> = ({setIsLoggedIn}) => {
     const [cred, setCred] = useState<cred>({
         email: "",
         password: ""
@@ -32,6 +35,9 @@ const Signin = () => {
                 console.log(data)
                 if(data?.token) {
                     toast.success(data.message)
+                    localStorage.setItem('token' , `Bearer ${data.token}`)
+                    setIsLoggedIn(true)
+                    navigate('/teacher/dashboard')
                 } else {
                     toast.error(data.message)
                 }

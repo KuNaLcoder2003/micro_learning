@@ -47,6 +47,7 @@ const Signup = () => {
                 const data = await response.json();
                 if(data?.token) {
                     toast.success(data.message)
+                    navigate('/signin')
                 } else {
                     toast.error(data.message)
                 }
