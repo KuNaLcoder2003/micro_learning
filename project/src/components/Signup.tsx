@@ -37,7 +37,7 @@ const Signup = () => {
             const formData = new FormData()
             formData.append("first_name" , deatils.first_name)
             formData.append("last_name" , deatils.last_name)
-            formData.append("email" , deatils.password)
+            formData.append("email" , deatils.email)
             formData.append("password" , deatils.password)
             formData.append("avatar" , deatils.files[0])
             fetch('http://localhost:3000/api/v1/teacher/signup' , {

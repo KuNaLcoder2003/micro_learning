@@ -98,6 +98,7 @@ interface Prop {
 
 const Dashboard : React.FC<Prop> = ({setIsLoggedIn}) => {
     const [menuOpen, setIsMenuOpen] = useState(false);
+    const [avatar , setAvatar] = useState<string>("")
     const [addCouseModalOpen, setAddCourseModalOpen] = useState<boolean>(false)
     const [courses, setCourses] = useState<course[]>([])
     const [students, setStudents] = useState<any>({})
@@ -127,6 +128,7 @@ const Dashboard : React.FC<Prop> = ({setIsLoggedIn}) => {
                     setTeacherName(data.teacher_name)
                     setCourses(data.courses)
                     setStudents(data.student_courses)
+                    setAvatar(data.avatar)
                 } else {
                     toast.error(data.message)
                 }
@@ -188,7 +190,7 @@ const Dashboard : React.FC<Prop> = ({setIsLoggedIn}) => {
                                     </div>
                                 </div>
                                 <div className='flex items-center gap-2 '>
-                                    <User className='text-white bg-blue-500 rounded-full' size={30} />
+                                    <img className='text-white bg-blue-500 rounded-full w-[30px] h-[30px]' src={avatar} />
                                     <div className='flex flex-col'>
                                         <h3 className='text-xl font-bold'>{teacherName}</h3>
                                         <p className='text-gray-300'>Instructor</p>
@@ -254,7 +256,7 @@ const Dashboard : React.FC<Prop> = ({setIsLoggedIn}) => {
                                 </div>
                             </div>
                             <div className='mt-80 flex border-b border-b-gray-300 items-center justify-between lg:justify-start w-[90%] m-auto gap-4'>
-                                <User size={30} className='bg-blue-400 text-white text-3xl rounded-full' />
+                                <img className='text-white bg-blue-500 rounded-full w-[30px] h-[30px]' src={avatar} />
                                 <div className=''>
                                     <h3 className='text-lg font-bold'>{teacherName}</h3>
                                     <p className='text-lg text-gray-300'>Instructor</p>

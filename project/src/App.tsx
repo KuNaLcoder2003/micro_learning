@@ -4,6 +4,8 @@ import Signin from './components/Signin';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import { useEffect, useState } from 'react';
+import TeacherCourseDetail from './components/CoursePage';
+import Course from './components/Course';
 
 function App() {
   const [isLoggedIn , setIsLoggedIn] = useState<boolean>(false);
@@ -23,6 +25,7 @@ function App() {
       <Route path='/signin' element={<Signin setIsLoggedIn={setIsLoggedIn} />} />
       <Route path='/signup' element={<Signup/>} />
       <Route path='/teacher/dashboard' element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} /> : <Signin setIsLoggedIn={setIsLoggedIn} />} />
+      <Route path='/course' element={<Course/>} />
     </Routes>
   )
 }
