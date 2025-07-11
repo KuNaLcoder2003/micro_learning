@@ -30,7 +30,7 @@ teacher_router.post('/signup', upload.single('avatar'), async (req: Request, res
         }
         const buffer = Buffer.from(file.buffer)
 
-        const result = await uploadAvatar(buffer, "avatars")
+        const result = await uploadAvatar(buffer, "avatars" , "image")
         if (result.err) {
             res.status(400).json({
                 message: 'Unable to upload your avatar'
@@ -128,7 +128,7 @@ teacher_router.post('/uploadCourse', authMiddleware , upload.single('course_thum
             return
         }
         const buffer = Buffer.from(file.buffer)
-        const upload_result = await uploadAvatar(buffer, "courses_thumbnail")
+        const upload_result = await uploadAvatar(buffer, "courses_thumbnail" , "image")
         if (upload_result.err) {
             res.status(400).json({
                 message: 'Not able to uplaod the thumbnail , please try again'
@@ -188,12 +188,7 @@ teacher_router.get('/details',authMiddleware ,  async (req: any, res: Response) 
         const courseIds = courses.map( obj => {
             return obj.id
         })
-        if (courses.length == 0) {
-            res.status(404).json({
-                message: 'No courses available at the moment'
-            })
-            return
-        }
+        
         const students = await prisma.studentCourses.findMany({
             where : {
                 courseId : {
@@ -213,6 +208,7 @@ teacher_router.get('/details',authMiddleware ,  async (req: any, res: Response) 
         })
         res.status(200).json({
             teacher_name: `${teacher.first_name} ${teacher.last_name}`,
+            avatar : teacher.avatar,
             courses: courses,
             student_courses
         })

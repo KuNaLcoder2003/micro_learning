@@ -29,7 +29,7 @@ student_router.post('/signup', upload.single('avatar'), async (req: Request, res
         }
         const buffer = Buffer.from(file.buffer)
 
-        const result = await uploadAvatar(buffer, "avatars")
+        const result = await uploadAvatar(buffer, "avatars" , "image")
         if (result.err) {
             res.status(400).json({
                 message: 'Unable to upload your avatar'
