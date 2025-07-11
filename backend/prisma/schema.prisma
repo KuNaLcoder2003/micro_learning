@@ -47,15 +47,18 @@ model Course {
 }
 model Week {
   id Int @unique @id @default(autoincrement())
-  week_number Int
+  week_number Int @default(1) 
   course_id Int
   course Course @relation(fields: [course_id] , references: [id])
+  videos Video[]
 }
 model Video{
   id Int @unique @id @default(autoincrement())
   video_url String? @default("")
   course_id Int
   course Course @relation(fields: [course_id] , references: [id])
+  week_id Int
+  week Week @relation(fields: [week_id] , references: [id])
 }
 model Payment {
   id Int @unique @id @default(autoincrement())
