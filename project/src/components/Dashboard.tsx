@@ -49,9 +49,10 @@ const StatCard = ({ stat }: any) => {
     )
 }
 const CourseCard = ({ obj, students }: any) => {
+    const navigate = useNavigate()
     // 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop'
     return (
-        <div className='max-w-[30%] rounded-lg mb-4 shadow-lg p-4'>
+        <div  className='max-w-[30%] rounded-lg mb-4 shadow-lg p-4'>
             <div className='flex flex-col'>
                 <div className='max-w-full max-h-[180px] overflow-hidden'>
                     <img src={obj.thumbnail ? obj.thumbnail :'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop'} alt='Image unavailable' className='rounded-lg w-full object-cover h-full' />
@@ -72,7 +73,7 @@ const CourseCard = ({ obj, students }: any) => {
                             style={{ width: `${(8 / 10) * 100}%` }}
                         />
                     </div>
-                    <button className='w-[70%] m-auto text-white font-bold bg-black p-2 rounded-lg'>Manage Course</button>
+                    <button onClick={()=> navigate(`/course/${obj.id}`)} className='w-[70%] m-auto text-white font-bold bg-black p-2 rounded-lg'>Manage Course</button>
                 </div>
             </div>
         </div>
